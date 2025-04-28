@@ -1,0 +1,12 @@
+# Render deployment configuration for Flask+Bokeh app
+services:
+  - type: web
+    name: flask-bokeh-app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    plan: free
+    envVars:
+      - key: FLASK_ENV
+        value: production
+# Add more envVars as needed, e.g., for secrets or configuration

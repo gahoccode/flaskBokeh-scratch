@@ -1,0 +1,36 @@
+[project]
+name = "portfolio-optimizer"
+version = "0.1.0"
+description = "Flask+Bokeh portfolio optimization web app"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "flask==3.0.3",
+    "bokeh==3.4.0",
+    "gunicorn==23.0.0",
+    "vnstock==3.2.2",
+    "ruff==0.3.7",
+    "rich==13.7.1",
+    "pytest==8.3.5",
+    "tenacity==8.2.3"
+]
+
+[tool.uv]
+virtualenvs.in-project = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "F401",  # Unused imports
+    "F841",  # Local variable assigned but never used
+    "F821",  # Unused local variable
+    "F811",  # Duplicate argument
+    "F822",  # Unnecessary lambda
+    "F823",  # Local variable referenced before assignment
+    "F841",  # Local variable assigned but never used
+    "W291",  # Trailing whitespace
+    "W292",  # Trailing blank line
+    "W293",  # Blank line contains whitespace
+    "W391",  # Blank line at end of file
+]
