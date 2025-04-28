@@ -46,15 +46,26 @@ def weights_pie_chart(weights_dict, asset_names, label, width=600):
         weights_dict (dict): Dict of weights for a portfolio
         asset_names (list): List of asset names
         label (str): Title label for the chart
+        width (int): Width of the chart in pixels
     Returns:
         bokeh.plotting.Figure
     """
     weights = [weights_dict[name] for name in asset_names]
+    
+    # Fix for color palette selection based on number of assets
+    num_assets = len(asset_names)
+    if num_assets <= 10:
+        from bokeh.palettes import Category10
+        colors = Category10[max(3, num_assets)][:num_assets]  # Category10 has entries for 3-10
+    else:
+        from bokeh.palettes import Category20
+        colors = Category20[min(20, num_assets)] if num_assets <= 20 else Category20[20] * (num_assets // 20 + 1)
+    
     data = {
         'asset': asset_names,
         'weight': weights,
         'angle': [w * 2 * pi for w in weights],
-        'color': Category20[len(asset_names)] if len(asset_names) <= 20 else Category20[20] * (len(asset_names) // 20 + 1)
+        'color': colors
     }
     source = ColumnDataSource(data)
     p = figure(height=400, width=width, title=f"{label} Portfolio Weights (Pie Chart)", toolbar_location=None,

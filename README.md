@@ -37,10 +37,30 @@
 - All tests must pass before deployment.
 
 ## Deployment
-- Procfile included for Heroku-style deployment:
-  - `web: gunicorn app:app`
-- Set environment variables (e.g., `SECRET_KEY`) via Heroku config or `.env` file (not committed).
-- All dependencies are pinned in requirements.txt and pyproject.toml.
+- Procfile included for production deployment:
+  - `web: gunicorn wsgi:app`
+- Set environment variables in your deployment platform:
+  - `SECRET_KEY`: Generate a secure random key
+  - `FLASK_ENV`: Set to `production` for production deployments
+
+### Render Deployment
+1. Push your code to GitHub
+2. Create a new Web Service on Render
+3. Connect your GitHub repository
+4. Configure the service:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn wsgi:app` (not app:app)
+   - **Environment Variables**: Add `SECRET_KEY` and `FLASK_ENV=production`
+
+### Troubleshooting Deployment
+- If you see `Failed to find attribute 'app' in 'app'` error:
+  - Verify your start command is `gunicorn wsgi:app`
+  - Check that wsgi.py exists and contains `app = create_app()`
+- If static files (CSS/JS) return 404 errors:
+  - Ensure static files are in the correct location
+  - Check Flask app configuration for static folder path
+  - For Render, you may need to set `STATIC_URL_PATH` environment variable
+
 - To deploy:
   1. Ensure all tests pass and code is linted (ruff).
   2. Push to your deployment platform (Heroku, Render, etc.).

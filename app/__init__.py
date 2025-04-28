@@ -7,7 +7,8 @@ def create_app():
     """Flask application factory."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
     template_dir = os.path.abspath(os.path.join(base_dir, '..', 'templates'))
-    app = Flask(__name__, template_folder=template_dir)
+    static_dir = os.path.abspath(os.path.join(base_dir, '..', 'static'))
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'replace-this-with-a-secure-random-key')
     # Production-safe: DEBUG and TEMPLATES_AUTO_RELOAD only if dev
     flask_env = os.environ.get('FLASK_ENV', 'production')
@@ -103,9 +104,14 @@ def create_app():
         # Store only minimal user input in session if needed
         session['last_inputs'] = dict(symbols=symbols, start_date=start_date, end_date=end_date, num_portfolios=num_portfolios, risk_free_rate=risk_free_rate)
 
+        # Create outputs directory if it doesn't exist
+        base_dir = os.path.abspath(os.path.dirname(__file__))
+        output_dir = os.path.abspath(os.path.join(base_dir, '..', 'outputs'))
+        os.makedirs(output_dir, exist_ok=True)
+        
         # Generate Bokeh HTML output
         layout = combined_layout(metrics, optimal, price_data=price_data)
-        output_path = os.path.join(os.getcwd(), 'output.html')
+        output_path = os.path.join(output_dir, 'output.html')
         output_file(output_path, title="Portfolio Optimization Results")
         save(layout)
         return redirect(url_for('results'))
@@ -114,7 +120,9 @@ def create_app():
     def results():
         from flask import send_file
         import os
-        output_path = os.path.join(os.getcwd(), 'output.html')
+        base_dir = os.path.abspath(os.path.dirname(__file__))
+        output_dir = os.path.abspath(os.path.join(base_dir, '..', 'outputs'))
+        output_path = os.path.join(output_dir, 'output.html')
         if not os.path.exists(output_path):
             return "No results available. Please run an optimization first.", 404
         return send_file(output_path, mimetype='text/html', as_attachment=False)
