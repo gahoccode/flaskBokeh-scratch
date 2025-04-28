@@ -1,0 +1,47 @@
+# Version control
+.git
+.gitignore
+.windsurfrules
+
+# Python environments
+.venv
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache
+*.so
+.Python
+env/
+
+# Distribution / packaging
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Development and local files
+.env
+.env.example
+*.log
+tasks/
+scripts/
+README-task-master.md
+CHANGELOG.md
+
+# Output files that should be generated at runtime
+output.html
+outputs/
+
+# Docker specific
+Dockerfile
+docker-compose.yml
+.dockerignore

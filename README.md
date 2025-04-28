@@ -37,11 +37,48 @@
 - All tests must pass before deployment.
 
 ## Deployment
+
+### Procfile Deployment (Heroku, etc.)
 - Procfile included for production deployment:
   - `web: gunicorn wsgi:app`
 - Set environment variables in your deployment platform:
   - `SECRET_KEY`: Generate a secure random key
   - `FLASK_ENV`: Set to `production` for production deployments
+
+### Docker Deployment
+- Dockerfile and docker-compose.yml provided for containerized deployment
+- Environment variables can be set in docker-compose.yml or passed at runtime
+- Suitable for any container orchestration platform (Kubernetes, ECS, etc.)
+- Images are based on Python 3.10-slim for minimal size and security
+
+#### Docker Usage Instructions
+1. **Build and start the container**:
+   ```bash
+   docker-compose up --build
+   ```
+
+2. **Access the application**:
+   - Open your browser and navigate to `http://localhost:5000` (or the port specified in your .env file)
+
+3. **Run in detached mode**:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Stop the container**:
+   ```bash
+   docker-compose down
+   ```
+
+5. **View logs**:
+   ```bash
+   docker-compose logs -f
+   ```
+
+6. **Override environment variables**:
+   ```bash
+   SECRET_KEY=your-secure-key docker-compose up
+   ```
 
 ### Render Deployment
 1. Push your code to GitHub
