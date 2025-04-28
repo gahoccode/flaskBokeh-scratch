@@ -1,4 +1,3 @@
-# app.py
 from app import create_app
 from rich import print
 

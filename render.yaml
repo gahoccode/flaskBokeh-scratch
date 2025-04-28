@@ -4,7 +4,7 @@ services:
     name: flask-bokeh-app
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn wsgi:app"
     plan: free
     envVars:
       - key: FLASK_ENV
