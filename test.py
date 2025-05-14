@@ -1,6 +1,5 @@
 from vnstock import Quote
 import pandas as pd
-import numpy as np
 
 def load_stock_data(symbols, start_date, end_date, interval='1D'):
     """

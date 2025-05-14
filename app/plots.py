@@ -90,7 +90,6 @@ def plot_price_history(df, optimal=None):
         bokeh.plotting.Figure: The price history chart
     """
     import pandas as pd
-    import numpy as np
     from bokeh.plotting import figure
     from bokeh.palettes import Category10
     from bokeh.models import ColumnDataSource, HoverTool

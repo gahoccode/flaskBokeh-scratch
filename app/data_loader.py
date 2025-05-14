@@ -5,10 +5,9 @@ Integrates vnstock and supports loading from GitHub CSV, with robust error handl
 """
 
 import pandas as pd
-import numpy as np
 import logging
 from rich import print
-from vnstock import *  # For future API integration
+from vnstock import Quote  # Import specific classes instead of using wildcard import
 
 class DataLoaderError(Exception):
     """Custom exception for DataLoader errors."""
@@ -46,8 +45,6 @@ class DataLoader:
         Raises:
             DataLoaderError: If input validation fails or data loading fails
         """
-        from vnstock import Quote
-        import pandas as pd
 
         if not isinstance(symbols, list) or not symbols:
             self.logger.error("Symbols must be a non-empty list.")
