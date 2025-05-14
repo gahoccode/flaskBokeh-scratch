@@ -136,12 +136,30 @@ def plot_price_history(df, optimal=None):
                 weights = {k: v/weight_sum for k, v in weights.items()}
                 
                 # Calculate portfolio value over time (starting with $1)
-                portfolio_values = pd.Series(0, index=df.index)
+                # First, ensure all assets have data for all dates to prevent issues
+                assets_data = {}
                 for asset, weight in weights.items():
                     if asset in df.columns:
-                        # Normalize asset prices to start at 1
-                        normalized_prices = df[asset] / df[asset].iloc[0] if not df[asset].iloc[0] == 0 else 0
-                        portfolio_values += normalized_prices * weight
+                        assets_data[asset] = df[asset]
+                
+                # Create a portfolio value series using the weighted returns
+                # Initialize at $1 (100%)
+                portfolio_values = pd.Series(1.0, index=df.index)
+                
+                # Calculate daily returns for each asset
+                returns_df = pd.DataFrame(index=df.index)
+                for asset in assets_data:
+                    returns_df[asset] = assets_data[asset].pct_change().fillna(0)
+                
+                # Calculate the weighted daily returns of the portfolio
+                for i in range(1, len(portfolio_values)):
+                    daily_return = 0
+                    for asset, weight in weights.items():
+                        if asset in returns_df.columns:
+                            daily_return += returns_df[asset].iloc[i] * weight
+                    
+                    # Update portfolio value
+                    portfolio_values.iloc[i] = portfolio_values.iloc[i-1] * (1 + daily_return)
                 
                 # Create source for the portfolio line
                 source = ColumnDataSource(data={
